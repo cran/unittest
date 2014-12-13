@@ -29,7 +29,7 @@ run_script <- function(script, expected_status, expected_out, description) {
         )
         stop( description )
     }
-    invisible( c(exit_status, actual) )
+    invisible(c(exit_status, actual))
 }
 
 # one test one success
@@ -154,14 +154,40 @@ run_script(
 )
 
 # Failure outside test
+# NB: The error message is on stderr, not stdout, so the TAP output lies. Is this bad?
 run_script(
-    "library(unittest, quietly = TRUE)\nok(1==1,\"1 equals 1\")\nstop('eek\nook')\nok(2==2,\"2 equals 2\")",
+    paste(
+        "library(unittest, quietly = TRUE)",
+        "ok(1==1, '1 equals 1')",
+        "stop('eek\nook')",
+        "ok(2==2, '2 equals 2')",
+        "", sep = "\n"
+    ),
     1,
     c(
         "ok - 1 equals 1",
-        "# Looks like 1 tests passed, but script ended prematurely",
-        "# Error: eek",
-        "# ook"
+        "# Looks like you passed all 1 tests.",
+        NULL
     ),
     "Failure outside tests"
+)
+
+# tryCatch() doesn't count as failure
+run_script(
+    paste(
+        "library(unittest, quietly = TRUE)",
+        "ok(1==1, '1 equals 1')",
+        "tryCatch(stop('not fatal'), error = function (e) NULL)",
+        "ok(2==2, '2 equals 2')",
+        "", sep = "\n"
+    ),
+    0,
+    c(
+        "ok - 1 equals 1",
+        "NULL",
+        "ok - 2 equals 2",
+        "# Looks like you passed all 2 tests.",
+        NULL
+    ),
+    "Caught errors outside tests"
 )
