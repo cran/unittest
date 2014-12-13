@@ -6,11 +6,11 @@
 \title{TAP-compliant Unit Testing}
 \description{
   Concise TAP-compliant unit testing package.
-  Authored tests that can be run using CMD check with minimal implementation overhead.
+  Authored tests can be run using CMD check with minimal implementation overhead.
   If you want more features there are other unit testing packages (see 'See Also').
 }
 \details{
-  The \code{unittest} package provides a single function, \code{\link{ok}}, that prints \code{ok}
+  The \code{unittest} package provides a function, \code{\link{ok}}, that prints \code{ok}
   when the expression provided evaluates to \code{TRUE} and \code{not ok} if the expression
   evaluates to anything else or results in an error. This is the \code{TAP} format
   (\url{http://testanything.org/}) for reporting test results.
@@ -34,7 +34,7 @@
   \preformatted{
     biggest <- function(x,y) { max(c(x,y)) }
   }
-  To test this create a file called \code{test_myfunction.R} in the same directory cointaining
+  To test this create a file called \code{test_myfunction.R} in the same directory containing
   \preformatted{
     library(unittest, quietly = TRUE)
 
@@ -69,6 +69,7 @@
   Assuming your package contains (and \code{exports}) the \code{biggest()} function from
   \sQuote{Getting started}, we could add a \code{tests/test_biggest.R} that contains
   \preformatted{
+    library(mypackage)
     library(unittest, quietly = TRUE)
 
     ok( biggest(3,4) == 4, "two numbers" )
@@ -76,15 +77,42 @@
   }
   and that's it. \code{R CMD check} will run the tests and fail if any of the tests fail.
 
-  Note that your test file MUST load \code{unittest}, but SHOULD NOT load the package being tested explicitly
-  (this is done for you by \code{CMD check}).\cr
-
   If you want to include tests for un-exported functions you will need to refer to them directly using
   \code{:::} notation.
   For example if \code{biggest()} was not \code{exported} and my package was called \code{mypackage} then my
   first test would need to look like this
   \preformatted{
     ok( mypackage:::biggest(3,4) == 4, "two numbers" )
+  }
+
+  If you want to run your tests at the R command line with the source function, then use the \code{chdir}
+  option to make sure that your tests run in the same directory that \code{CMD check} will run them.
+  \preformatted{
+    source( "mypackage/tests/test_biggest.R", chdir = TRUE )
+  }
+}
+
+\section{Grouping tests}{
+  When dealing with many tests in one file, it is useful to group them together, to do this \code{unittest}
+  provides \code{ok_group}. You can use it thus:-
+  \preformatted{
+    ok_group("Test addition", {
+      ok( 1 + 1 == 2, "Can add 1" )
+      ok( 1 + 3 == 4, "Can add 3" )
+    })
+    ok_group("Test subtraction", {
+      ok( 1 - 1 == 0, "Can subtract 1" )
+      ok( 1 - 3 == -2, "Can subtract 3" )
+    })
+  }
+  ...which will result in...
+  \preformatted{
+    # Test addition
+    ok - Can add 1
+    ok - Can add 3
+    # Test subtraction
+    ok - Can subtract 1
+    ok - Can subtract 3
   }
 }
 
@@ -96,6 +124,40 @@
       a <- c(1,2,3)
       b <- 1:3
       ok( all.equal(a,b), "a and b are equal" )
+    }
+
+    Alternatively, the following helper function will give coloured output showing what's different
+    \preformatted{
+      cmp <- function(a, b) {
+        if(identical(all.equal(a,b), TRUE)) return(TRUE)
+
+        if (file.exists(Sys.which('git'))) {
+          totmp <- function(x) {
+            f <- tempfile(pattern = "str.")
+            capture.output(str(x,
+              vec.len = 1000,
+              digits.d = 5,
+              nchar.max = 1000), file = f)
+            return(f)
+          }
+
+          return(suppressWarnings(system2(
+            Sys.which('git'),
+            c("diff", "--no-index", "--color-words", totmp(a), totmp(b)),
+            input = "",
+            stdout = TRUE, stderr = TRUE)))
+        }
+
+        return(c(
+          capture.output(str(a)),
+          "... does not equal...",
+          capture.output(str(b))
+        ))
+      }
+    }
+    To see the coloured output, try the following:
+    \preformatted{
+    ok(cmp(1:3, 1:8))
     }
   }
 
@@ -124,6 +186,18 @@
     this will result in the output
     \preformatted{
       ok - add_four() argument not numeric correctly throws an error
+    }
+  }
+
+  \subsection{Testing un-exported package functions}{
+    If you have some tests which require access to un-exported functions,
+    or un-exported S3 methods, you can use \code{local}.
+    \preformatted{
+      local({
+        ok(internal_function() == 3)
+        ok(another_internal_function() == 4)
+        ok(final_internal_function() == 5)
+      }, asNamespace('mypackage'))
     }
   }
 
