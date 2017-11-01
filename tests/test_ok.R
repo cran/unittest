@@ -39,6 +39,10 @@ expect_error <- function(ok_call, exp_err_regex = NULL) {
     }
 }
 
+regex_escape <- function (x) {
+    gsub("([.|()\\^{}+$*?]|\\[|\\])", "\\\\\\1", x)
+}
+
 # -----------------
 # test invalid uses
 # -----------------
@@ -88,13 +92,26 @@ expect_failure(
     '# Mean relative difference: 1'
 )
 
-# test produces an error
-fn <- function() {
+# on an error, we display the error and the failing call
+fn <- function(x) {
     stop("Oh no")
 }
+complex_call <- function(...) {
+    fn(badgers)
+}
 expect_failure(
-    ok(fn(), "Function that returns error"),
-    '# Test resulted in error: Oh no\n#  -> fn'
+    ok(fn(5), "Function that returns error"),
+    'Oh no(.|\n)*fn\\(5\\)'
+)
+expect_failure(
+    ok(complex_call(badgers = "yes", locations = c("Bungay", "Milton Keynes", "Hearne Bay", "Wigan")), "Multi-line stacktrace"),
+    paste(
+        regex_escape('# -> complex_call(badgers = "yes", locations = c("Bungay", "Milton Keynes", '),
+        regex_escape('#     "Hearne Bay", "Wigan"))'),
+        regex_escape('# -> fn(badgers)'),
+        regex_escape('# -> stop("Oh no")'),
+        sep = '\\n', collapse = '\\n'
+    )
 )
 
 
