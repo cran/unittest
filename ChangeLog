@@ -1,4 +1,16 @@
-2016-12-03  Jamie Lentin  <jm@ravingmantis.com>
+2019-11-19 Jamie Lentin  <jm@ravingmantis.com>
+
+    Version 1.4-0
+
+    * ut_cmp_*: Support comparing environments
+    * ut_cmp_*: Graduate from example to included function
+    * ut_cmp_error: Graduate from example to included function
+    * ok: Preserve empty lines in dignostic output
+    * non_interactive_summary: Bail out message on fatal script errors
+
+2017-11-01  Jamie Lentin  <jm@ravingmantis.com>
+
+    Version 1.3-0
 
     * R/ok.R (ok): Add stacktrace as well as final failing call
     * R/ok.R (ok): Deparse the call object correctly when handling test errors

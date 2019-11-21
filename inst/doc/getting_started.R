@@ -1,10 +1,25 @@
-### R code from vignette source 'getting_started.Rnw'
-### Encoding: UTF-8
+## ------------------------------------------------------------------------
+biggest <- function(x,y) {max(c(x,y))}
 
-###################################################
-### code chunk number 1: common.tex:14-16
-###################################################
-    options(width = 80)
-    options(continue = ' ', prompt = ' ')
+## ---- eval=FALSE---------------------------------------------------------
+#  library(unittest, quietly = TRUE)
+#  
+#  source('biggest.R')
+#  
+#  ok(biggest(3,4) == 4, "two numbers")
+#  ok(biggest(c(5,3),c(3,4)) == 5, "two vectors")
 
+## ---- eval=FALSE---------------------------------------------------------
+#  source('test_biggest.R')
+
+## ------------------------------------------------------------------------
+biggest <- function(x,y) { 4 }
+
+## ---- eval=FALSE---------------------------------------------------------
+#  library(unittest, quietly = TRUE)
+#  
+#  source('biggest.R')
+#  
+#  ok(ut_cmp_equal(biggest(3,4), 4), "two numbers")
+#  ok(ut_cmp_equal(biggest(c(5,3),c(3,4)), 5), "two vectors")
 
