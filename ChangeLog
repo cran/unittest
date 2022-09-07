@@ -1,3 +1,20 @@
+2022-09-07 Jamie Lentin  <jm@lentin.co.uk>
+
+    Version 1.5-1
+
+    * NEWS: Convert to a R-devel compatible format
+
+2022-09-07 Jamie Lentin  <jm@lentin.co.uk>
+
+    Version 1.5-0
+
+    * options: Disable git-diff colors where appropriate
+    * options: options(unittest.output = ...) to redirect unittest output
+    * ut_cmp_*: Support for r-devel-windows-x86_64-new-UL
+    * ut_cmp_*: Add deparse_frame option for nicer comparision helpers
+    * ut_cmp_*: Show more digits in diff output when required
+    * ut_cmp_*: Windows path-related bugfixes
+
 2019-11-19 Jamie Lentin  <jm@ravingmantis.com>
 
     Version 1.4-0

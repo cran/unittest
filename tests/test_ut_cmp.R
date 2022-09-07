@@ -10,7 +10,7 @@ cmp_lines <- function (actual, ...) {
         return(TRUE)
     }
     # utils::str(no_color, vec.len = 1000, digits.d = 5, nchar.max = 1000)
-    return(actual)
+    return(c(c(...)[!is.null(c(...))], '----', actual))
 }
 
 # Mock (fn) in namespace with (replacement) whilst (block) is being evaluated
@@ -101,6 +101,14 @@ ok_group("ut_cmp_equal", (function () {
         '$a',
         '[1] [-3-]{+5+}',
         NULL), "Environments get converted to lists")
+
+    cmp_helper <- function (a, b) ut_cmp_equal(a, b, deparse_frame = -2)
+    ok(cmp_lines(cmp_helper(2, 8),
+        'Mean relative difference: 3',
+        '--- 2',
+        '+++ 8',
+        '[1] [-2-]{+8+}',
+        NULL), "A helper function can up deparse_frame to improve output")
 })())
 
 # Mock git_binary(), so we don't find git even if it is available
@@ -148,6 +156,38 @@ ok_group("ut_cmp_identical", (function () {
         '+++ 4',
         ' [-int-]{+num+} 4',
         NULL), "Equivalent objects do not, unlike ut_cmp_equal(). We also fall back to using str(), as print() will produce identical output")
+
+    ok(cmp_lines(ut_cmp_identical(1, 1 + 1e-10),
+        '--- 1',
+        '+++ 1 + 1e-10',
+        ' num [-1-]{+1.000000000100000008274+}',
+        NULL), "Increase str() digits to 22 show a difference")
+
+    ok(cmp_lines(ut_cmp_identical(1 + 1e-10, 1 + 1e-7),
+        '--- 1 + 1e-10',
+        '+++ 1 + 1e-07',
+        ' num [-1-]{+1.0000001+}',
+        NULL), "Increase str() digits (7 is enough) show a difference")
+
+    cmp_helper <- function (a, b) ut_cmp_identical(a, b, deparse_frame = -2)
+    ok(cmp_lines(cmp_helper(2, 8),
+        '--- 2',
+        '+++ 8',
+        '[1] [-2-]{+8+}',
+        NULL), "A helper function can up deparse_frame to improve output")
+})())
+
+ok_group("output_diff", (function () {
+    if (!file.exists(unittest:::git_binary())) {
+        ok(TRUE, "# skip git not available")
+        return()
+    }
+
+    options("cli.num_colors" = 256)
+    ok(any(grepl('\033\\[.*?m', ut_cmp_identical(1L, 2L), perl = TRUE)), "cli.num_colors honoured (escape code in output)")
+
+    options("cli.num_colors" = 1)
+    ok(!all(grepl('\033\\[.*?m', ut_cmp_identical(1L, 2L), perl = TRUE)), "cli.num_colors honoured (no escape code in output)")
 })())
 
 ok_group("ut_cmp_identical:nogit", mock(unittest:::git_binary, function () "/not-here", {

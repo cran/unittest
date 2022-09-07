@@ -1,7 +1,8 @@
 [![CRAN version badge](https://img.shields.io/cran/v/unittest.svg)](https://cran.r-project.org/package=unittest)
+[![CRAN Checks](https://cranchecks.info/badges/summary/unittest)](https://cran.r-project.org/web/checks/check_results_unittest.html)
 [![CRAN RStudio mirror total downloads badge](https://cranlogs.r-pkg.org/badges/grand-total/unittest?color=001577)](https://cran.r-project.org/package=unittest)
 [![CRAN RStudio mirror monthly downloads badge](https://cranlogs.r-pkg.org/badges/unittest?color=001577)](https://cran.r-project.org/package=unittest)
-[![Build Status](https://travis-ci.org/ravingmantis/unittest.svg?branch=master)](https://travis-ci.org/ravingmantis/unittest)
+[![R-CMD-check](https://github.com/ravingmantis/unittest/workflows/R-CMD-check/badge.svg)](https://github.com/ravingmantis/unittest/actions)
 [![DOI](https://zenodo.org/badge/23253323.svg)](https://zenodo.org/badge/latestdoi/23253323)
 
 unittest
@@ -11,9 +12,9 @@ This is a concise, [TAP](http://testanything.org/)-compliant, R package for writ
 
 The workhorse of the `unittest` package is the `ok` function which prints "ok" when the expression provided evaluates to `TRUE` and "not ok" if the expression evaluates to anything else or results in an error.
 
-If you are writing a package see the "I'm writing a package, how do I put tests in it?" section in the package documentation.
+If you are writing a package see the ["Adding Tests to Packages" vignette](https://ravingmantis.github.io/unittest/articles/testing_packages.html).
 
-The package was inspired by Perl's [Test::Simple](http://search.cpan.org/perldoc?Test::Simple).
+The package was inspired by Perl's [Test::Simple](https://metacpan.org/pod/Test::Simple).
 
 If you want more features there are other unit testing packages out there; see [testthat](https://CRAN.R-project.org/package=testthat), [RUnit](https://CRAN.R-project.org/package=RUnit), [svUnit](https://CRAN.R-project.org/package=svUnit).
 
@@ -49,33 +50,7 @@ In an R session type
 Installing the latest development version directly from GitHub
 ==============================================================
 
-Linux
------
+To install the latest development version, use [remotes](https://CRAN.R-project.org/package=remotes):
 
-In an R session type:
-
-    pkg_file <- tempfile()
-    download.file(url = 'https://github.com/ravingmantis/unittest/archive/master.tar.gz', mode = 'wb', method = 'wget', destfile = pkg_file)
-    install.packages(pkg_file, repos = NULL, type = 'source')
-
-Mac OSX / Windows
------------------
-
-``download.file`` may not support fetching ``https`` URLs. Alternatively, you
-can use the the CRAN package [downloader](https://CRAN.R-project.org/package=downloader)
-to fetch the archive instead:
-
-    # install.packages("downloader")
-    pkg_file <- tempfile()
-    downloader::download(url = 'https://github.com/ravingmantis/unittest/archive/master.tar.gz', mode = 'wb', destfile = pkg_file)
-    install.packages(pkg_file, repos = NULL, type = 'source')
-
-Alternatively use the `devtools` CRAN package
----------------------------------------------
-
-If you have the CRAN package [devtools](https://CRAN.R-project.org/package=devtools)
-you can use this to install directly from github:
-
-    # install.packages("devtools")
-    devtools::install_github("ravingmantis/unittest")
-
+    # install.packages("remotes")
+    remotes::install_github("ravingmantis/unittest")
