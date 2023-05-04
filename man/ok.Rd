@@ -35,45 +35,29 @@
 }
 
 \examples{
-  ok(1==1, "1 equals 1")
-  # ok - 1 equals 1
+ok(1==1, "1 equals 1")
 
-  ok(1==1)
-  # ok - 1 == 1
+ok(1==1)
 
-  ok(1==2, "1 equals 2")
-  # not ok - 1 equals 2
-  # # Test returned non-TRUE value:
-  # # [1] FALSE
+ok(1==2, "1 equals 2")
 
-  ok(all.equal(c(1,2),c(1,2)), "compare vectors")
-  # ok - compare vectors
+ok(all.equal(c(1,2),c(1,2)), "compare vectors")
 
-  fn <- function () stop("oops")
-  ok(fn(), "something with a coding error")
-  # not ok - something with a coding error
-  # # Test resulted in error:
-  # #  oops
-  # # Whilst evaluating:
-  # #  fn()
+fn <- function () stop("oops")
+ok(fn(), "something with a coding error")
 
-  ok(c("Some diagnostic", "messages"), "A failure with diagnostic messages")
-  # not ok - A failure with diagnostic messages
-  # # Test returned non-TRUE value:
-  # # Some diagnostic
-  # # messages
+ok(c("Some diagnostic", "messages"), "A failure with diagnostic messages")
 
-  ## Send unittest output to stderr()
-  options(unittest.output = stderr())
-  ok(ut_cmp_equal(4, 5), "4 == 5? Probably not")
+## Send unittest output to stderr()
+options(unittest.output = stderr())
+ok(ut_cmp_equal(4, 5), "4 == 5? Probably not")
 
-  ## Reset unittest output to default (stdout())
-  options(unittest.output = NULL)
-  ok(ut_cmp_equal(4, 5), "4 == 5? Probably not")
+## Reset unittest output to default (stdout())
+options(unittest.output = NULL)
+ok(ut_cmp_equal(4, 5), "4 == 5? Probably not")
 
-  \dontshow{
-    # Clear unittest result log, so our unittest failues don't fail example-building
-    rm('outcomes', pos = unittest:::pkg_vars)
-    rm('errors', pos = unittest:::pkg_vars)
-  }
+\dontshow{
+  # Clear unittest result log, so our unittest failues don't fail example-building
+  unittest:::clear_outcomes()
+}
 }
