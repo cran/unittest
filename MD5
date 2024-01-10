@@ -1,5 +1,5 @@
-c41d2e98aecd7635bdb997f2d6647cf9 *ChangeLog
-01fe34db24ad6bba2647628a9bc04cca *DESCRIPTION
+fe3ca9c0980cbc5ce78e54d78065767d *ChangeLog
+7143b0cfc6cddc42fdc004d8fb43da85 *DESCRIPTION
 82d68cd0a514097dff7050b82545d919 *NAMESPACE
 886494f5f3c282a519558ceb6f6f437b *NEWS.md
 7a4c0f95b3fe51f97c580b19b7f43002 *R/non_interactive_summary.R
@@ -22,7 +22,7 @@ aef4749279733cc67ee12ba6659a7a04 *inst/doc/testing_packages.Rmd
 13ce0d1cbc88b507a34e19a468289be5 *man/figures/ut_cmp_identical_example.svg
 2e7294c1bd298d49be496b003f898dfa *man/ok.Rd
 e3303b8552fd084dbb0a34e3e719f5c9 *man/ok_group.Rd
-4807cf45edb90cbada448c8c18260197 *man/unittest-package.Rd
+f1961fce73248a080da9a13a1ac5ebdc *man/unittest-package.Rd
 f494ca2d78eb5cf3d09452ef15df7c37 *man/ut_cmp.Rd
 f8fb2e367f5c113680677efb6581e31a *man/ut_cmp_error.Rd
 8a4ce9aaadd48613ad64acfbacf76c83 *tests/test_non_interactive.R
