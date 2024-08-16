@@ -1,3 +1,19 @@
+# unittest 1.7-0:
+
+## Breaking changes
+
+* ok_group() now catches exceptions, reports as errors and carries on, unless unittest.stop_on_fail set (08ae641)
+
+## New features
+
+* Colour ok / not ok lines if we can (4dc435d0)
+* Include TAP plan in test summary at end of tests (1b890ad)
+* Add options(unittest.stop_on_fail = TRUE), to stop with first error (ce2dcbc)
+* Failing tests are now reported at the end of test output (ec84b0c)
+* unittest.cmp_context configures number of context lines for diff output (833c9c5)
+* Add ut_cmp_warning() for checking code is raising warnings (840f1f4)
+* ut_cmp_error() can now check error class as well as message (27e6e2d)
+
 # unittest 1.6-0:
 
 ## Bug fixes
